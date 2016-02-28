@@ -6,9 +6,7 @@ import java.io.BufferedReader;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.List;
+import java.util.*;
 
 // do not change class name or interface it implements
 public class WordLadderSolver implements Assignment4Interface {
@@ -43,7 +41,9 @@ public class WordLadderSolver implements Assignment4Interface {
 	// do not change signature of the method implemented from the interface
 	@Override
 	public List<String> computeLadder(String startWord, String endWord) throws NoSuchLadderException {
-		List<Word> ladder = getLadder(new Word(startWord), new Word(endWord), 5);
+		unmarkAll();
+//		List<Word> ladder = getLadder(new Word(startWord), new Word(endWord), 5);
+		List<Word> ladder = getLadder(new Word(startWord), new Word(endWord));
 		List<String> ladderStrings = new ArrayList<>();
 
 
@@ -79,6 +79,29 @@ public class WordLadderSolver implements Assignment4Interface {
 			}
 		}
 		return ladder;
+	}
+
+	private List<Word> getLadder(Word startWord, Word endWord) {
+		Map<Word,ArrayList<Word>> ladder = new HashMap<>();
+		LinkedList<Word> queue = new LinkedList<>();
+		queue.addLast(startWord);
+		ArrayList<Word> startLadder = new ArrayList<>();
+		startLadder.add(startWord);
+		ladder.put(startWord, startLadder);
+		Word temp = startWord;
+		while (!temp.equals(endWord) && queue.peek() != null) {
+			temp = queue.removeFirst();
+			for (Word w : dict) {
+				if (!w.getMarker() && w.differentByOne(temp) < WORD_LENGTH) {
+					queue.addLast(w);
+					ArrayList<Word> tempLadder = new ArrayList<>(ladder.get(temp));
+					tempLadder.add(w);
+					ladder.put(w, tempLadder);
+					w.setMarker(true);
+				}
+			}
+		}
+		return ladder.get(temp);
 	}
 
 	@Override

@@ -13,11 +13,11 @@ public class Assign4Driver
 
         try 
         {
-            List<String> result = wordLadderSolver.computeLadder("money", "yolky");
+            List<String> result = wordLadderSolver.computeLadder("money", "honey");
 	        for (String s : result) {
 		        System.out.println(s);
 	        }
-            boolean correct = wordLadderSolver.validateResult("money", "yolky", result);
+            boolean correct = wordLadderSolver.validateResult("money", "honey", result);
 	        if(correct) {
 //		        for (String s : result) {
 //			        System.out.println(s);
