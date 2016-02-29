@@ -1,6 +1,8 @@
+package assignment4;
+
 /*
     ADD YOUR HEADER HERE
- */
+*/
 
 import java.io.BufferedReader;
 import java.io.FileNotFoundException;
