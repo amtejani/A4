@@ -23,17 +23,17 @@ public class Assign4Driver
         try {
 			  FileReader freader = new FileReader(args[1]);
 			  BufferedReader reader = new BufferedReader(freader);
-			  for (String s = reader.readLine(); s != null; s = reader.readLine()) 
+			  for (String s = reader.readLine(); s != null; s = reader.readLine())
 			  {
 				  try{
 					  String[] input = s.split(" ");
-					  
+
 					  if(input[0].length() != 5 || input[1].length() != 5)
 					  {
 						  throw new ArrayIndexOutOfBoundsException();
-						  
+
 					  }
-					  
+
 					  List<String> result = wordLadderSolver.computeLadder(input[0], input[1]);
 					  boolean correct = wordLadderSolver.validateResult(input[0], input[1], result);
 				        if(correct) {
@@ -42,31 +42,31 @@ public class Assign4Driver
 					        }
 					        System.out.println();
 				        }
-					} 
+					}
 					catch(ArrayIndexOutOfBoundsException a)
-					{	
+					{
 						System.err.println("INVALID INPUT, COMMAND ABORTED");
 					}
 				  	catch (NoSuchLadderException e) {
 			            e.printStackTrace();
 			        }
-				  
+
 				}
-			} 
-			catch (FileNotFoundException e) 
+			}
+			catch (FileNotFoundException e)
 			{
 				System.err.println ("Error: File not found. Exiting...");
 				e.printStackTrace();
 				System.exit(-1);
-			} catch (IOException e) 
+			} catch (IOException e)
 			{
 				System.err.println ("Error: IO exception. Exiting...");
 				e.printStackTrace();
 				System.exit(-1);
 			}
-        
+
 /*
-        try 
+        try
         {
             List<String> result = wordLadderSolver.computeLadder("money", "honey");
 	        for (String s : result) {

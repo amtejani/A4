@@ -29,9 +29,6 @@ public class WordLadderSolver implements Assignment4Interface {
 				if (s.charAt(0) != '*')
 					dict.add(new Word(s.substring(0,5)));
 			}
-//			for(Word s: dict){
-//				System.out.println(s.getWord());
-//			}
 		} catch (FileNotFoundException e) {
 			e.printStackTrace();
 		} catch (IOException e) {
@@ -56,7 +53,6 @@ public class WordLadderSolver implements Assignment4Interface {
 			return ladderStrings;
 		}
 		throw new NoSuchLadderException("No such ladder!");
-		// implement this method
 //		throw new UnsupportedOperationException("Not implemented yet!");
 	}
 
@@ -108,6 +104,8 @@ public class WordLadderSolver implements Assignment4Interface {
 
 	@Override
 	public boolean validateResult(String startWord, String endWord, List<String> wordLadder) {
+		if (!startWord.equals(wordLadder.get(0)) || !endWord.equals(wordLadder.get(wordLadder.size() - 1)))
+			return false;
 		for(int i = 0; i < wordLadder.size() - 1; i += 1) {
 			if (!diffByOne(wordLadder.get(i), wordLadder.get(i + 1)))
 				return false;
