@@ -36,8 +36,14 @@ public class Assign4Test {
 			// short ladder tests
 			result = wordLadderSolver.computeLadder("dears", "fears");
 			assertEquals(2, result.size());
+			assertTrue(validateResult("dears", "fears", result));
 			result = wordLadderSolver.computeLadder("hello", "hello");
 			assertEquals(1, result.size());
+			assertTrue(validateResult("hello", "hello", result));
+			
+			// long ladder tests
+			result = wordLadderSolver.computeLadder("stone","money");
+			assertTrue(validateResult("stone", "money", result));
 		} catch(NoSuchLadderException e) {
 			fail("should either return ladder or null, should not throw NoSuchLadderException");
 		}
