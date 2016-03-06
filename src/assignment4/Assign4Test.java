@@ -62,6 +62,18 @@ public class Assign4Test {
 		result.clear();
 		result.add("dears");
 		assertTrue(wordLadderSolver.validateResult("dears", "dears", result));
+		
+		// invalid ladder test
+		result.clear();
+		result.add("hello");
+		result.add("world");
+		assertFalse(wordLadderSolver.validateResult("hello", "world", result));
+		
+
+		result.clear();
+		result.add("dears");
+		result.add("fears");
+		assertFalse(wordLadderSolver.validateResult("dears", "dears", result));
 	}
 
 	@Test

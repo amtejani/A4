@@ -14,14 +14,10 @@ import java.util.*;
 
 // do not change class name or interface it implements
 public class WordLadderSolver implements Assignment4Interface {
-	//    Dictionary dictionary;
 	private HashSet<Word> dict;
 	public final static int WORD_LENGTH = 5;
 
 	public WordLadderSolver(String filename) {
-//        dictionary = new Dictionary(filename);
-
-
 		dict = new HashSet<>();
 		BufferedReader reader;
 		try {
@@ -31,18 +27,13 @@ public class WordLadderSolver implements Assignment4Interface {
 				if (s.charAt(0) != '*')
 					dict.add(new Word(s.substring(0,5).toLowerCase()));
 			}
-//			for(Word s: dict){
-//				System.out.println(s.getWord());
-//			}
 		} catch (FileNotFoundException e) {
 			e.printStackTrace();
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
 	}
-	// add a constructor for this object. HINT: it would be a good idea to set up the dictionary there
-
-	// do not change signature of the method implemented from the interface
+	
 	@Override
 	public List<String> computeLadder(String startWord, String endWord) throws NoSuchLadderException {
 		unmarkAll();
@@ -57,7 +48,6 @@ public class WordLadderSolver implements Assignment4Interface {
 		if (!contained) {
 			return null;
 		}
-//		List<Word> ladder = getLadder(w1, w2, 5);
 		List<Word> ladder = getLadder(w1, w2);
 		List<String> ladderStrings = new ArrayList<>();
 
@@ -69,51 +59,27 @@ public class WordLadderSolver implements Assignment4Interface {
 			return ladderStrings;
 		}
 		throw new NoSuchLadderException("No ladder between " + startWord + " and " + endWord + "!");
-		// implement this method
-//		throw new UnsupportedOperationException("Not implemented yet!");
 	}
 
-	private List<Word> getLadder(Word startWord, Word endWord, int differentLetter) {
-		List<Word> ladder = null;
-		if (startWord.differentByOne(endWord) < 5) {
-			ladder = new ArrayList<>();
-			ladder.add(startWord);
-			return ladder;
-		}
-		for (Word w : dict) {
-			int letter = startWord.differentByOne(w);
-			if (!w.getMarker() && letter < WORD_LENGTH && letter != differentLetter) {
-				w.setMarker(true);
-				List<Word> tempLadder = getLadder(w, endWord, letter);
-//				w.setMarker(false);
-				if ((tempLadder != null) && ((ladder == null) || (tempLadder.size() < ladder.size()))) {
-					ladder = tempLadder;
-					ladder.add(0,startWord);
-//					return ladder;
-				}
-			}
-		}
-		return ladder;
-	}
-
+	// bfs getladder
 	private List<Word> getLadder(Word startWord, Word endWord) {
-		Map<Word,ArrayList<Word>> ladder = new HashMap<>();
-		LinkedList<Word> queue = new LinkedList<>();
+		Map<Word,ArrayList<Word>> ladder = new HashMap<>(); // map of word ladders for each word
+		LinkedList<Word> queue = new LinkedList<>(); // queue used for bfs
 		queue.addLast(startWord);
-		ArrayList<Word> startLadder = new ArrayList<>();
+		ArrayList<Word> startLadder = new ArrayList<>(); // ladder for start word
 		startLadder.add(startWord);
 		ladder.put(startWord, startLadder);
 		Word temp = startWord;
 		
-		while (!temp.equals(endWord) && queue.peek() != null) {
-			temp = queue.removeFirst();
-			for (Word w : dict) {
-				if (!w.getMarker() && w.differentByOne(temp) < WORD_LENGTH) {
+		while (!temp.equals(endWord) && queue.peek() != null) { // iterate if queue isnt empty and end condition isnt reached yet 
+			temp = queue.removeFirst(); //get next word
+			for (Word w : dict) { 
+				if (!w.getMarker() && w.differentByOne(temp)) { // for each word that is differnt from current word and that hasnt been marked yet 
 					queue.addLast(w);
-					ArrayList<Word> tempLadder = new ArrayList<>(ladder.get(temp));
+					ArrayList<Word> tempLadder = new ArrayList<>(ladder.get(temp)); // ladder for next word
 					tempLadder.add(w);
 					ladder.put(w, tempLadder);
-					w.setMarker(true);
+					w.setMarker(true); // mark word
 				}
 			}
 		}
@@ -122,6 +88,7 @@ public class WordLadderSolver implements Assignment4Interface {
 		return null;
 	}
 
+	// returns true if wordLadder is a valid ladder for the two input words
 	@Override
 	public boolean validateResult(String startWord, String endWord, List<String> wordLadder) {
 		if(wordLadder == null || wordLadder.size() == 0)
@@ -137,7 +104,7 @@ public class WordLadderSolver implements Assignment4Interface {
 //		throw new UnsupportedOperationException("Not implemented yet!");
 	}
 
-	// add additional methods here
+	// returns true if word1 and word2 are different by at most one letter
 	private boolean diffByOne(String word1, String word2) {
 		if (word1.substring(0, 4).equals(word2.substring(0, 4)) || word1.substring(1, 5).equals(word2.substring(1, 5)))
 			return true;
@@ -149,7 +116,8 @@ public class WordLadderSolver implements Assignment4Interface {
 		return false;
 	}
 
-	public void unmarkAll() {
+	// clears all markers in the dictionary
+	private void unmarkAll() {
 		for (Word w : dict) {
 			w.setMarker(false);
 		}
