@@ -1,8 +1,11 @@
 package assignment4;
 
-/**
- * Created by Ali on 2/27/2016.
- */
+/*
+    Sonal Jain and Ali Tejani
+    sj23277 and amt3639
+    Assignment 4 - Word Ladder
+*/
+
 public class Word {
    private String word;
    private boolean marker;

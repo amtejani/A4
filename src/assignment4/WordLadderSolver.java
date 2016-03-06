@@ -1,7 +1,9 @@
 package assignment4;
 
 /*
-    ADD YOUR HEADER HERE
+    Sonal Jain and Ali Tejani
+    sj23277 and amt3639
+    Assignment 4 - Word Ladder
 */
 
 import java.io.BufferedReader;
@@ -27,8 +29,11 @@ public class WordLadderSolver implements Assignment4Interface {
 			reader = new BufferedReader(freader);
 			for (String s = reader.readLine(); s != null; s = reader.readLine()) {
 				if (s.charAt(0) != '*')
-					dict.add(new Word(s.substring(0,5)));
+					dict.add(new Word(s.substring(0,5).toLowerCase()));
 			}
+//			for(Word s: dict){
+//				System.out.println(s.getWord());
+//			}
 		} catch (FileNotFoundException e) {
 			e.printStackTrace();
 		} catch (IOException e) {
@@ -41,8 +46,19 @@ public class WordLadderSolver implements Assignment4Interface {
 	@Override
 	public List<String> computeLadder(String startWord, String endWord) throws NoSuchLadderException {
 		unmarkAll();
-//		List<Word> ladder = getLadder(new Word(startWord), new Word(endWord), 5);
-		List<Word> ladder = getLadder(new Word(startWord), new Word(endWord));
+		Word w1 = new Word(startWord);
+		Word w2 = new Word(endWord);
+		boolean contained = false;
+		for(Word w: dict) {
+			if (w.equals(w1) || w.equals(w2)) {
+				contained = true;
+			}
+		}
+		if (!contained) {
+			return null;
+		}
+//		List<Word> ladder = getLadder(w1, w2, 5);
+		List<Word> ladder = getLadder(w1, w2);
 		List<String> ladderStrings = new ArrayList<>();
 
 
@@ -52,13 +68,14 @@ public class WordLadderSolver implements Assignment4Interface {
 			}
 			return ladderStrings;
 		}
-		throw new NoSuchLadderException("No such ladder!");
+		throw new NoSuchLadderException("No ladder between " + startWord + " and " + endWord + "!");
+		// implement this method
 //		throw new UnsupportedOperationException("Not implemented yet!");
 	}
 
 	private List<Word> getLadder(Word startWord, Word endWord, int differentLetter) {
 		List<Word> ladder = null;
-		if (startWord.equals(endWord)) {
+		if (startWord.differentByOne(endWord) < 5) {
 			ladder = new ArrayList<>();
 			ladder.add(startWord);
 			return ladder;
@@ -87,6 +104,7 @@ public class WordLadderSolver implements Assignment4Interface {
 		startLadder.add(startWord);
 		ladder.put(startWord, startLadder);
 		Word temp = startWord;
+		
 		while (!temp.equals(endWord) && queue.peek() != null) {
 			temp = queue.removeFirst();
 			for (Word w : dict) {
@@ -99,13 +117,18 @@ public class WordLadderSolver implements Assignment4Interface {
 				}
 			}
 		}
-		return ladder.get(temp);
+		if(temp.equals(endWord))
+			return ladder.get(temp);
+		return null;
 	}
 
 	@Override
 	public boolean validateResult(String startWord, String endWord, List<String> wordLadder) {
-		if (!startWord.equals(wordLadder.get(0)) || !endWord.equals(wordLadder.get(wordLadder.size() - 1)))
+		if(wordLadder == null || wordLadder.size() == 0)
 			return false;
+		if (!startWord.equals(wordLadder.get(0)) || !endWord.equals(wordLadder.get(wordLadder.size() -1))){
+			return false;
+		}
 		for(int i = 0; i < wordLadder.size() - 1; i += 1) {
 			if (!diffByOne(wordLadder.get(i), wordLadder.get(i + 1)))
 				return false;

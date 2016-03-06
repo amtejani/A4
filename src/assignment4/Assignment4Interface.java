@@ -1,5 +1,11 @@
 package assignment4;
 
+/*
+Sonal Jain and Ali Tejani
+sj23277 and amt3639
+Assignment 4 - Word Ladder
+*/
+
 import java.util.List;
 
 public interface Assignment4Interface {
