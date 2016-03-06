@@ -39,13 +39,17 @@ public class WordLadderSolver implements Assignment4Interface {
 		unmarkAll();
 		Word w1 = new Word(startWord);
 		Word w2 = new Word(endWord);
-		boolean contained = false;
+		boolean contained1 = false;
+		boolean contained2 = false;
 		for(Word w: dict) {
-			if (w.equals(w1) || w.equals(w2)) {
-				contained = true;
+			if (w.equals(w1)) {
+				contained1 = true;
+			}
+			if (w.equals(w2)) {
+				contained2 = true;
 			}
 		}
-		if (!contained) {
+		if (!contained1 || !contained2) {
 			return null;
 		}
 		List<Word> ladder = getLadder(w1, w2);
